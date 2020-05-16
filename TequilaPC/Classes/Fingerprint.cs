@@ -50,6 +50,8 @@ public class Fingerprint
     public string FileName { get { return m_FileName; } }
     public string RootPath { get { return m_RootPath; } }
     public string FullName { get { return MyToolkit.ValidPath(Path.Combine(m_RootPath, m_FileName)); } }
+    public string AbsolutePath { get { return Path.GetFullPath(FullName); } }
+    public bool PathIsSafe { get { return MyToolkit.CheckFileName(m_RootPath, m_FileName); } }
     public long Size { get { return m_Size; } }
     public string Checksum { get { return m_Checksum; } }
     public bool Mismatch { get { return m_mismatch; } set { m_mismatch = value; } }

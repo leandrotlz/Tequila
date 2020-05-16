@@ -17,6 +17,20 @@ class MyToolkit
     }
 
     /// <summary>
+    /// Static function to validate against path traversal, i.e. files named "..\bad.txt"
+    /// Returns true if combining the RootPath and FileName results in an absolute path that's inside of the RootPath.
+    /// Returns false if the combined absolute path is not inside of RootPath.
+    /// </summary>
+    /// <param name="RootPath"></param>
+    /// <param name="FileName"></param>
+    /// <returns></returns>
+    public static bool CheckFileName(string RootPath, string FileName) {
+        string combinedPath = Path.Combine(RootPath, FileName);
+        string absolutePath = Path.GetFullPath(combinedPath);
+        return absolutePath.StartsWith(RootPath);
+    }
+
+    /// <summary>
     /// Static function to make sure dashes are appropiate for the specific OS. 
     /// Make sure all paths are absolute, windows paths must contain the drive name at the start for this to work.
     /// </summary>
