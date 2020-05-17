@@ -204,7 +204,15 @@ namespace Tequila
                 ProgressEventArgs e = new ProgressEventArgs(i, m_ManifestFileList.Count);
 
                 Fingerprint LocalFingerprint;
-                if (ManifestFingerprint.Size == 0)
+                if (!ManifestFingerprint.PathIsSafe)
+                {
+                    // This manifest entry sets off our path traversal detection!
+                    // 1. Don't attempt to download it, delete it, etc.
+                    // 2. Write a log entry about it.
+                    MyToolkit.ActivityLog("Manifest contains path traversal! File named '" + ManifestFingerprint.FileName + 
+                        "' would be written to '" + ManifestFingerprint.AbsolutePath + "'. Skipping.");
+                }
+                else if (ManifestFingerprint.Size == 0)
                 {
                     // File is to be deleted
                     if (System.IO.File.Exists(ManifestFingerprint.FullName))
